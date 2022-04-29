@@ -5,3 +5,6 @@ spring:
         url: 'jdbc:postgresql://localhost:5432/spring-workout'
         username: postgres
         password: admin
+    data:
+        rest:
+            base-path: /api
