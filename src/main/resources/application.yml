@@ -8,3 +8,6 @@ spring:
     data:
         rest:
             base-path: /api
+
+    liquibase:
+        change-log: 'classpath:db/changelog/db-changelog.xml'
