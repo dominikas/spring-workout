@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
@@ -34,5 +33,18 @@ public class LifeBalanceCheckerControllerTest {
         String response = restTemplate.getForObject(requestUri, String.class);
         Assertions.assertThat(response).containsAnyOf("true", "false");
     }
-//    whenGetRequestToServiceHasInvalidArgument_thenReturnBadRequestResponse
+
+    @Test
+    public void whenGetRequestToServiceHasInvalidQueryParamValue_thenReturnBadRequestResponse() {
+        URI requestUri = UriComponentsBuilder.newInstance()
+                .scheme("http")
+                .host("localhost")
+                .path("/lifebalancecheck/islifebalanced")
+                .port(port)
+                .queryParam("desiredSelfCareRatio", "1.7")
+                .build()
+                .toUri();
+        String response = restTemplate.getForObject(requestUri, String.class);
+        Assertions.assertThat(response).isEqualTo("Constraint validation exception: getLifeBalance.desiredSelfCareRatio: must be less than or equal to 1");
+    }
 }
