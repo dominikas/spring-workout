@@ -1,5 +1,6 @@
-package com.example.demo.order;
+package com.example.demo.infrastructure;
 
+import com.example.demo.model.Order;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;

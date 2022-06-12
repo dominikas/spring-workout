@@ -8,6 +8,7 @@ spring:
     data:
         rest:
             base-path: /api
-
     liquibase:
         change-log: 'classpath:db/changelog/db-changelog.xml'
+
+normalizedThresholdToSatisfyOthers: 0.2

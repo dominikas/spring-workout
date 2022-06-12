@@ -1,4 +1,4 @@
-package com.example.demo.order;
+package com.example.demo.model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
