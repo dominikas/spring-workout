@@ -1,7 +1,17 @@
 package com.example.demo.rest;
 
-public record LifeBalanceDto(Boolean result) {
-    public static LifeBalanceDto of(boolean result) {
-        return new LifeBalanceDto(result);
+import com.example.demo.model.LifeBalance;
+
+public record LifeBalanceDto(
+        Boolean isLifeBalanced,
+        Long allSatisfiedCount,
+        Double satisfactionRatio
+) {
+    public static LifeBalanceDto of(LifeBalance lifeBalance) {
+        return new LifeBalanceDto(
+                lifeBalance.isLifeBalanced(),
+                lifeBalance.getAllSatisfiedCount(),
+                lifeBalance.getSatisfactionRatio()
+        );
     }
 }

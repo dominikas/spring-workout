@@ -1,9 +1,11 @@
 package com.example.demo.services.lifebalancechecker.strategy.impl;
 
-import org.assertj.core.api.Assertions;
+import com.example.demo.model.LifeBalance;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class LifeBalancerStrategySatisfyingOthersTest {
 
@@ -19,7 +21,9 @@ class LifeBalancerStrategySatisfyingOthersTest {
                 new Random(meaningOfLife),
                 new ThreadedExecutor(10)
         );
-        Assertions.assertThat(lifeBalancer.balanceLife(desiredSelfCareRatio)).isFalse();
+        LifeBalance expected = LifeBalance.of(false, 102316, 101316, 1000, 0.009773642441064935);
+        LifeBalance result = lifeBalancer.balanceLife(desiredSelfCareRatio);
+        assertThat(result).isEqualTo(expected);
     }
 
     @Test
@@ -34,6 +38,8 @@ class LifeBalancerStrategySatisfyingOthersTest {
                 new Random(meaningOfLife),
                 new ThreadedExecutor(7)
         );
-        Assertions.assertThat(lifeBalancer.balanceLife(desiredSelfCareRatio)).isTrue();
+        LifeBalance expected = LifeBalance.of(true, 247, 47, 200, 0.8097165991902834);
+        LifeBalance result = lifeBalancer.balanceLife(desiredSelfCareRatio);
+        assertThat(result).isEqualTo(expected);
     }
 }
