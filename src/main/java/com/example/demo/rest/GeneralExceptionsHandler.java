@@ -17,4 +17,10 @@ public class GeneralExceptionsHandler {
         log.warn("Constraint validation exception: {}", e.getMessage());
         return ResponseEntity.badRequest().body(String.format("Constraint validation exception: %s", e.getMessage()));
     }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<Object> handle(RuntimeException e) {
+        log.warn("Runtime exception: {}", e.getMessage());
+        return ResponseEntity.internalServerError().body("Internal service error, try again or contact us");
+    }
 }

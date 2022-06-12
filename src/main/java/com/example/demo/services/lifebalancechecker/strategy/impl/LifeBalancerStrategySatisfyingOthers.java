@@ -5,7 +5,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.IntStream;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -13,23 +15,39 @@ public class LifeBalancerStrategySatisfyingOthers implements LifeBalancerStrateg
 
     private final double normalizedThresholdToSatisfyOthers;
     private final Random random;
+
+    private final ThreadedExecutor threadedExecutor;
     private final AtomicLong othersSatisfiedCounter = new AtomicLong(0);
     private final AtomicLong selfSatisfiedCounter = new AtomicLong(0);
+
 
     @Override
     public boolean balanceLife(double desiredSelfCareRatio) {
         boolean selfSatisfied;
         try {
-            satisfyOthers();
-        } catch (StackOverflowError e) {
-            log.warn("Mind overflow");
+            satisfyAll();
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
         } finally {
             selfSatisfied = isSelfSatisfiedMoreThanLess(desiredSelfCareRatio);
         }
         return selfSatisfied;
     }
 
-    private synchronized boolean isSelfSatisfiedMoreThanLess(double desiredSelfCareRatio) {
+    private void satisfyAll() throws ExecutionException, InterruptedException {
+        int numberOfTasks = 1000;
+        threadedExecutor.executeTask(() -> IntStream.range(0, numberOfTasks).forEach(it -> satisfy()));
+    }
+
+    private void satisfy() {
+        try {
+            satisfyOthers();
+        } catch (StackOverflowError e) {
+            log.warn("Mind overflow");
+        }
+    }
+
+    private boolean isSelfSatisfiedMoreThanLess(double desiredSelfCareRatio) {
         long othersSatisfiedCount = othersSatisfiedCounter.get();
         long selfSatisfiedCount = selfSatisfiedCounter.get();
         long allSatisfiedCount = othersSatisfiedCount + selfSatisfiedCount;
@@ -43,7 +61,7 @@ public class LifeBalancerStrategySatisfyingOthers implements LifeBalancerStrateg
         return satisfactionRatio >= desiredSelfCareRatio;
     }
 
-    private void satisfyOthers() {
+    private synchronized void satisfyOthers() {
         if (areOthersSatisfied()) {
             othersSatisfiedCounter.incrementAndGet();
             satisfyOthers();

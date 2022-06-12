@@ -14,7 +14,8 @@ class LifeBalancerStrategySatisfyingOthersTest {
         double desiredSelfCareRatio = 0.7;
         LifeBalancerStrategySatisfyingOthers lifeBalancer = new LifeBalancerStrategySatisfyingOthers(
                 normalizedThresholdToSatisfyOthers,
-                new Random(meaningOfLife)
+                new Random(meaningOfLife),
+                new ThreadedExecutor(10)
         );
         Assertions.assertThat(lifeBalancer.balanceLife(desiredSelfCareRatio)).isFalse();
     }
@@ -26,7 +27,8 @@ class LifeBalancerStrategySatisfyingOthersTest {
         double desiredSelfCareRatio = 0.7;
         LifeBalancerStrategySatisfyingOthers lifeBalancer = new LifeBalancerStrategySatisfyingOthers(
                 normalizedThresholdToSatisfyOthers,
-                new Random(meaningOfLife)
+                new Random(meaningOfLife),
+                new ThreadedExecutor(10)
         );
         Assertions.assertThat(lifeBalancer.balanceLife(desiredSelfCareRatio)).isTrue();
     }
