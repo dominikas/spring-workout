@@ -20,6 +20,6 @@ public class LifeBalanceCheckerController {
 
     @GetMapping("/lifebalancecheck/islifebalanced")
     ResponseEntity<LifeBalanceDto> getLifeBalance(@RequestParam @Min(0) @Max(1) double desiredSelfCareRatio) {
-        return ResponseEntity.ok(lifeBalanceCheckerService.isLifeBalanced(desiredSelfCareRatio));
+        return ResponseEntity.ok(lifeBalanceCheckerService.balanceLife(desiredSelfCareRatio));
     }
 }

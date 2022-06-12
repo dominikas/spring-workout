@@ -13,7 +13,7 @@ public class LifeBalanceCheckerServiceImpl implements LifeBalanceCheckerService 
     private final LifeBalancerStrategy lifeBalancerStrategy;
 
     @Override
-    public LifeBalanceDto isLifeBalanced(double desiredSelfCareRatio) {
+    public LifeBalanceDto balanceLife(double desiredSelfCareRatio) {
         return LifeBalanceDto.of(lifeBalancerStrategy.balanceLife(desiredSelfCareRatio));
     }
 }
