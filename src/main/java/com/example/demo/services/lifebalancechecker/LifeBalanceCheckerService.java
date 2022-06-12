@@ -1,5 +1,7 @@
 package com.example.demo.services.lifebalancechecker;
 
+import com.example.demo.rest.LifeBalanceDto;
+
 public interface LifeBalanceCheckerService {
-    boolean isLifeBalanced(double desiredSelfCareRatio);
+    LifeBalanceDto isLifeBalanced(double desiredSelfCareRatio);
 }

@@ -26,13 +26,13 @@ class LifeBalancerStrategySatisfyingOthersTest {
     void balanceLife_whenOtherSatisfied_returnsTrue() {
         int meaningOfLife = 42;
         double normalizedThresholdToSatisfyOthers = 0.8;
-        int tasksCountToCompleteBalance = 1000;
+        int tasksCountToCompleteBalance = 200;
         double desiredSelfCareRatio = 0.7;
         LifeBalancerStrategySatisfyingOthers lifeBalancer = new LifeBalancerStrategySatisfyingOthers(
                 normalizedThresholdToSatisfyOthers,
                 tasksCountToCompleteBalance,
                 new Random(meaningOfLife),
-                new ThreadedExecutor(10)
+                new ThreadedExecutor(7)
         );
         Assertions.assertThat(lifeBalancer.balanceLife(desiredSelfCareRatio)).isTrue();
     }
