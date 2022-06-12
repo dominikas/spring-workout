@@ -14,6 +14,9 @@ public class LifeBalancerStrategyConfig {
     @Value("${normalizedThresholdToSatisfyOthers}")
     double normalizedThresholdToSatisfyOthers;
 
+    @Value("${tasksCountToCompleteBalance}")
+    int tasksCountToCompleteBalance;
+
     @Value("${maxThreadsForBalanceStrategy}")
     int maxThreadsForBalanceStrategy;
 
@@ -21,7 +24,9 @@ public class LifeBalancerStrategyConfig {
     LifeBalancerStrategySatisfyingOthers lifeBalancerStrategy() {
         return new LifeBalancerStrategySatisfyingOthers(
                 normalizedThresholdToSatisfyOthers,
+                tasksCountToCompleteBalance,
                 new Random(),
-                new ThreadedExecutor(maxThreadsForBalanceStrategy));
+                new ThreadedExecutor(maxThreadsForBalanceStrategy)
+        );
     }
 }

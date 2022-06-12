@@ -13,4 +13,6 @@ spring:
 
 normalizedThresholdToSatisfyOthers: 0.2
 
+tasksCountToCompleteBalance: 1000
+
 maxThreadsForBalanceStrategy: 10

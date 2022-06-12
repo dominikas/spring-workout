@@ -14,12 +14,12 @@ import java.util.stream.IntStream;
 public class LifeBalancerStrategySatisfyingOthers implements LifeBalancerStrategy {
 
     private final double normalizedThresholdToSatisfyOthers;
+    private final int tasksCountToCompleteBalance;
     private final Random random;
 
     private final ThreadedExecutor threadedExecutor;
     private final AtomicLong othersSatisfiedCounter = new AtomicLong(0);
     private final AtomicLong selfSatisfiedCounter = new AtomicLong(0);
-
 
     @Override
     public boolean balanceLife(double desiredSelfCareRatio) {
@@ -35,8 +35,7 @@ public class LifeBalancerStrategySatisfyingOthers implements LifeBalancerStrateg
     }
 
     private void satisfyAll() throws ExecutionException, InterruptedException {
-        int numberOfTasks = 1000;
-        threadedExecutor.executeTask(() -> IntStream.range(0, numberOfTasks).forEach(it -> satisfy()));
+        threadedExecutor.executeTask(() -> IntStream.range(0, tasksCountToCompleteBalance).parallel().forEach(it -> satisfy()));
     }
 
     private void satisfy() {
@@ -45,20 +44,6 @@ public class LifeBalancerStrategySatisfyingOthers implements LifeBalancerStrateg
         } catch (StackOverflowError e) {
             log.warn("Mind overflow");
         }
-    }
-
-    private boolean isSelfSatisfiedMoreThanLess(double desiredSelfCareRatio) {
-        long othersSatisfiedCount = othersSatisfiedCounter.get();
-        long selfSatisfiedCount = selfSatisfiedCounter.get();
-        long allSatisfiedCount = othersSatisfiedCount + selfSatisfiedCount;
-        double satisfactionRatio = (double) selfSatisfiedCounter.get() / allSatisfiedCount;
-        log.debug("""
-                        allSatisfiedCount: {}
-                        othersSatisfiedCount: {}
-                        selfSatisfiedCount: {}
-                        satisfaction ratio: {}""",
-                allSatisfiedCount, othersSatisfiedCount, selfSatisfiedCount, satisfactionRatio);
-        return satisfactionRatio >= desiredSelfCareRatio;
     }
 
     private synchronized void satisfyOthers() {
@@ -74,8 +59,21 @@ public class LifeBalancerStrategySatisfyingOthers implements LifeBalancerStrateg
         return random.nextDouble() >= normalizedThresholdToSatisfyOthers;
     }
 
-    private void satisfySelf() {
+    private synchronized void satisfySelf() {
         selfSatisfiedCounter.incrementAndGet();
     }
-}
 
+    private synchronized boolean isSelfSatisfiedMoreThanLess(double desiredSelfCareRatio) {
+        long othersSatisfiedCount = othersSatisfiedCounter.get();
+        long selfSatisfiedCount = selfSatisfiedCounter.get();
+        long allSatisfiedCount = othersSatisfiedCount + selfSatisfiedCount;
+        double satisfactionRatio = (double) selfSatisfiedCounter.get() / allSatisfiedCount;
+        log.debug("""
+                        allSatisfiedCount: {}
+                        othersSatisfiedCount: {}
+                        selfSatisfiedCount: {}
+                        satisfaction ratio: {}""",
+                allSatisfiedCount, othersSatisfiedCount, selfSatisfiedCount, satisfactionRatio);
+        return satisfactionRatio >= desiredSelfCareRatio;
+    }
+}

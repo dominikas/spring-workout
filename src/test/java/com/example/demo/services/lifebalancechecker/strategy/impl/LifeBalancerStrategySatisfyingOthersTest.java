@@ -9,11 +9,13 @@ class LifeBalancerStrategySatisfyingOthersTest {
 
     @Test
     void balanceLife_whenCannotSatisfyOthers_returnsFalse() {
-        double normalizedThresholdToSatisfyOthers = 0.01;
         int meaningOfLife = 42;
+        double normalizedThresholdToSatisfyOthers = 0.01;
+        int tasksCountToCompleteBalance = 1000;
         double desiredSelfCareRatio = 0.7;
         LifeBalancerStrategySatisfyingOthers lifeBalancer = new LifeBalancerStrategySatisfyingOthers(
                 normalizedThresholdToSatisfyOthers,
+                tasksCountToCompleteBalance,
                 new Random(meaningOfLife),
                 new ThreadedExecutor(10)
         );
@@ -22,11 +24,13 @@ class LifeBalancerStrategySatisfyingOthersTest {
 
     @Test
     void balanceLife_whenOtherSatisfied_returnsTrue() {
-        double normalizedThresholdToSatisfyOthers = 0.8;
         int meaningOfLife = 42;
+        double normalizedThresholdToSatisfyOthers = 0.8;
+        int tasksCountToCompleteBalance = 1000;
         double desiredSelfCareRatio = 0.7;
         LifeBalancerStrategySatisfyingOthers lifeBalancer = new LifeBalancerStrategySatisfyingOthers(
                 normalizedThresholdToSatisfyOthers,
+                tasksCountToCompleteBalance,
                 new Random(meaningOfLife),
                 new ThreadedExecutor(10)
         );
