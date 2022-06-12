@@ -1,4 +1,4 @@
-package com.example.demo.config;
+package com.example.demo.validators;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @Configuration
-public class ValidatorEventRegister implements InitializingBean {
+public class ValidatorEventConfig implements InitializingBean {
 
     @Autowired
     ValidatingRepositoryEventListener validatingRepositoryEventListener;

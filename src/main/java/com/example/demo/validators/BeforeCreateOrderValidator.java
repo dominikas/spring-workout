@@ -1,5 +1,6 @@
-package com.example.demo.order;
+package com.example.demo.validators;
 
+import com.example.demo.model.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
